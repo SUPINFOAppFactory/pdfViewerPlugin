@@ -1,0 +1,29 @@
+{
+  "author":"SUPINFO AppFActory"
+  ,"pluginName":"PDFViewer plugin"
+  ,"pluginDescription":"The PDF Viewer plugin allows you to link to external PDF files.Related Topics:Scan,Photo"
+  ,"supportEmail":"supinfoappfactory@supinfo.com"
+  ,"supportSite":"http://support.appdocumentation.com/knowledge-base/pdf-viewer-plugin-tutorial/"
+  ,"pluginIcon":"icon.png"
+  ,"licenseKey": "a4sd6-as654asd6as545a65s4d6a-65asd564a"
+  ,"control":{
+    "content":{
+      "enabled":true
+    }
+    , "design":{
+      "enabled":false
+    }
+    , "settings":{
+      "enabled":false
+    }
+  }
+  ,"widget":{
+
+  },
+  "features":[
+
+   ],
+   "languages":[
+      "en"
+   ]
+}

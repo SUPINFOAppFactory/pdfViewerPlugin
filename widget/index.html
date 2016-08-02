@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html ng-app="webviewPlugin">
+<head lang="en">
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="../../../scripts/buildfire.js"></script>
+</head>
+<body>
+<div style="text-align: center;vertical-align: middle; height: 100%">
+    <h3 id ="h" style="margin-top: 50%; opacity: .25;">.pdf</h3>
+    <div id="d" style="display: none;">
+        <h2>Success!</h2>
+        <p>Your PDF has been linked and will show in your app. To view your pdf now click <a id="a">here</a></p>
+    </div>
+</div>
+<script>
+        buildfire.spinner.show();
+
+        function dataLoadedHandler(result, fromUpdate) {
+            if (result && result.data && (result.id || fromUpdate)) {
+                var content = result.data.content;
+                if (content && content.url) {
+                    buildfire.getContext(function (err, context) {
+                        if (context.device.platform == "web") {
+                            var d =document.getElementById("d");
+                            if(d && content.url) {
+                                d.style.display='';
+                                var a =document.getElementById("a");
+                                a.onclick = function () {
+                                   buildfire.navigation.openWindow("https://docs.google.com/viewer?url=" + encodeURIComponent(content.url), "_system");
+                                    return false;
+                                }
+                            }
+                        }
+                        else {
+                            if (content.openInApp) {
+                                if(context.device.platform.toLowerCase() == "android")
+                                    buildfire.navigation.openWindow("https://docs.google.com/viewer?url=" + encodeURIComponent(content.url) , "_blank");
+                                else
+                                    buildfire.navigation.openWindow(content.url , "_blank");
+                            }
+                            else
+                                buildfire.navigation.openWindow(content.url, "_system");
+
+                            buildfire.navigation.goBack();
+                        }
+
+                        buildfire.spinner.hide();
+                    });
+                }
+              else{
+                  var d =document.getElementById("d");
+                  d.style.display='none';
+                }
+            } else{
+              var d =document.getElementById("d");
+              d.style.display='';
+              var a =document.getElementById("a");
+              a.onclick = function () {
+                buildfire.navigation.openWindow("https://docs.google.com/viewer?url=" + encodeURIComponent("https://www.polyu.edu.hk/iaee/files/pdf-sample.pdf"), "_system");
+                return false;
+              }
+            }
+        }
+
+        /**
+         * Go pull saved data
+         * */
+        buildfire.datastore.get(function (err, result) {
+            if (err) {
+                console.error("Error: ", err);
+                buildfire.spinner.hide();
+            } else {
+                dataLoadedHandler(result);
+            }
+        });
+
+        buildfire.datastore.onUpdate(function (result) {
+            dataLoadedHandler(result, true);
+        });
+
+</script>
+</body>
+</html>
